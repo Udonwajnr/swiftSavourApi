@@ -9,11 +9,20 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
+    static associate({Verification}) {
       // define association here
+      this.hasMany(Verification,{foreignKey:'userId',as:"verification"})
+    }
+    toJSON(){
+      return{...this.get(),id:undefined}
     }
   }
   User.init({
+    uuid:{
+      type:DataTypes.UUID,
+      defaultValue:DataTypes.UUIDV4,
+      allowNull:false
+    },
     firstName: {
       type:DataTypes.STRING(50),
       allowNull:false,
@@ -21,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
     lastName: {
       type:DataTypes.STRING(50),
       allowNull:false
+    },
+    userName:{
+      type:DataTypes.STRING(50),
+      allowNull:false,
     },
     email: {
       type:DataTypes.STRING,
@@ -35,8 +48,16 @@ module.exports = (sequelize, DataTypes) => {
       unique:true,
     },
     password:{
-      type:DataTypes.STRING
-    }
+      type:DataTypes.STRING,
+      allowNull:false
+    },
+    verified: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    verifiedAt: {
+      type: DataTypes.DATE,
+    },
   }, {
     sequelize,
     modelName: 'User',

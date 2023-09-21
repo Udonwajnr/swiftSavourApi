@@ -186,3 +186,85 @@ exports.login =async(req,res)=>{
     res.status(500).json(error("Server error", res.statusCode));
   }
 }
+
+/**
+ * @desc    Resend new verification token to user
+ * @method  POST api/auth/verify/resend
+ * @access  public
+ */
+
+exports.resendVerification = async(req,res)=>{
+  const {email} = req.body
+
+  // Simple checking for email
+  if (!email)
+    return res.status(422).json(validation([{ msg: "Email is required" }]));
+
+    try{
+      const user = await User.findOne({where:{ email: email.toLowerCase() }});
+      //  Check the user first
+      if (!user){
+        return res.status(404).json(error("Email not found", res.statusCode));
+            }
+            
+      // If user exists
+    // We gonna get data from verification by user ID
+    let verification = await Verification.findOne({where:{
+      userId: user.id,
+      type: "Register New Account",
+    }});
+
+    // If there's verification data
+    // Remove previous verification data and create a new one
+    if (verification) {
+      verification = await Verification.destroy({
+        where:{id:verification.id}
+      });
+    }
+
+     // Create a new verification data
+    let newVerification = await Verification.create({
+      token: randomString(50),
+      userId: user.id,
+      type: "Register New Account",
+    });
+    
+    res
+    .status(201)
+    .json(
+      success(
+        "Verification has been sent",
+        { verification: newVerification },
+        res.statusCode
+      )
+    );
+    }
+      catch(err){
+        console.error(err.message);
+        res.status(500).json(error("Server error", res.statusCode));
+    }
+}
+
+/**
+ * @desc    Get authenticated user
+ * @method  GET api/auth
+ * @access  private
+ */
+
+exports.getAuthenticatedUser=async(req,res)=>{
+  try{
+    const user = await User.findByPk(req.user.id)
+  if (!user){
+    return res.status(404).json(error("User not found", res.statusCode));
+  }
+// Send the response
+    res
+      .status(200)
+      .json(success(`Hello ${user.userName}`, { user }, res.statusCode));
+
+
+  }catch(err){
+    console.error(err.message);
+    res.status(500).json(error("Server error", res.statusCode));
+  }
+}

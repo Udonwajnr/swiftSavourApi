@@ -1,0 +1,25 @@
+restaurant
+
+{
+    "name":"uyo",
+    "address":"uyo",
+    "latitude":"3",
+    "longitude":"3",
+    "rating":"3",
+    "phoneNumber":"uyo",
+    "deliverTime":"uyo",
+    "logo":"uyo",
+    "image":"uyo",
+
+}
+
+
+
+dish
+
+{
+    "name":"rice",
+    "description":"hello",
+    "image":"jee",
+    "price":30
+}

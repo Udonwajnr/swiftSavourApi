@@ -7,7 +7,7 @@ restaurant
     "longitude":"3",
     "rating":"3",
     "phoneNumber":"uyo",
-    "deliverTime":"uyo",
+    "deliveryTime":"uyo",
     "logo":"uyo",
     "image":"uyo",
 
@@ -21,5 +21,12 @@ dish
     "name":"rice",
     "description":"hello",
     "image":"jee",
-    "price":30
+    "price":30,
+    "restaurantUuid":""
 }
+
+category{
+    name:'',
+    dishName:''
+}
+

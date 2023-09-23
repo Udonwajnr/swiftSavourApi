@@ -14,9 +14,14 @@ module.exports = {
         defaultValue:Sequelize.UUIDV4,
         allowNull:false
       },
+      dishId: {
+        type: Sequelize.INTEGER,
+        allowNull:false
+      },
       name: {
         type: Sequelize.STRING,
-        allowNull:false
+        allowNull:false,
+        unique:true
       },
       createdAt: {
         allowNull: false,

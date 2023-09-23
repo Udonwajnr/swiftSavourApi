@@ -14,6 +14,10 @@ module.exports = {
         defaultValue:Sequelize.UUIDV4,
         allowNull:false
       },
+      restaurantId: {
+        type: Sequelize.INTEGER,
+        allowNull:false
+      },
       name: {
         type: Sequelize.STRING,
       allowNull:false

@@ -1,4 +1,4 @@
-const {Category,Dish} =require("../../../models")
+const {Category,Dish,Restaurant} =require("../../../models")
 const asyncHandler = require('express-async-handler')
 const { success } = require("../../helpers/responseApi")
 const {validationResult} =require('express-validator')
@@ -7,7 +7,7 @@ const {validationResult} =require('express-validator')
 
 exports.getCategory =asyncHandler(async(req,res)=>{
     const category = await Category.findAll({
-        include:[{model:Dish,as:"dish"}],
+        include:[{model:Restaurant,as:"restaurant"},{model:Dish,as:"dish"}]
 }
     )
     return res.json(success(res.statusCode,{category:{category}}))
@@ -18,11 +18,11 @@ exports.createCategory = asyncHandler(async(req,res)=>{
     if(!error.isEmpty()){
         return res.status(400).json({error:error.array()})
     }
-    const {dishName,name} = req.body
-    const dish = await Dish.findOne({
-        where:{name:dishName}
+    const {name,restaurantName} = req.body
+    const restaurant = await Restaurant.findOne({
+        where:{name:restaurantName},
     })
-    const category = await Category.create({name,dishId:dish.id})
+    const category = await Category.create({name,categoryRestaurantId:restaurant.id})
     return res.json(success("category has been created successfully",res.statusCode,{category:{category}}))
 })
 
@@ -30,7 +30,7 @@ exports.getCategoryDetail =asyncHandler(async(req,res)=>{
     const uuid = req.params.uuid
     const category = await Category.findOne({
         where:{uuid},
-        include:[{model:Dish,as:"dish"}],
+        include:[{model:Restaurant,as:"restaurant"},{model:Dish,as:"dish"}]
     })
     return res.json(success(res.statusCode,{category:{category}}))
 })

@@ -1,10 +1,15 @@
 const express = require("express")
 const app = express()
 const dotenv = require("dotenv").config()
-const port =  process.env.PORT || 3000
-const {sequelize,User} = require('./models')
+const {sequelize} = require('./models')
+const cors = require("cors")
+const cookieParser = require('cookie-parser')
 
 app.use(express.json({ extended: false }))
+app.use(cookieParser())
+app.use(cors())
+
+const port =  process.env.PORT || 3000
 // authentication
 app.use("/api/user",require('./routes/api/user'))
 app.use('/api/auth', require("./routes/api/auth"));

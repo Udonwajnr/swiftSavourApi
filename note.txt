@@ -9,24 +9,23 @@ restaurant
     "phoneNumber":"uyo",
     "deliveryTime":"uyo",
     "logo":"uyo",
-    "image":"uyo",
-
+    "image":"uyo"
 }
 
 
 
 dish
-
 {
     "name":"rice",
     "description":"hello",
     "image":"jee",
     "price":30,
-    "restaurantUuid":""
+    "restaurantName":"",
+    "categoryName":""
 }
 
 category{
     name:'',
-    dishName:''
+    restaurantName:''
 }
 

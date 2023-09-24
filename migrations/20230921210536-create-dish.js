@@ -18,6 +18,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull:false
       },
+      categoryId: {
+        type: Sequelize.INTEGER,
+        allowNull:false
+      },
       name: {
         type: Sequelize.STRING,
       allowNull:false

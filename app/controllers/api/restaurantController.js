@@ -1,10 +1,15 @@
-const {Restaurant} =require("../../../models")
+const {Restaurant,Dish} =require("../../../models")
 const asyncHandler = require('express-async-handler')
 const { success } = require("../../helpers/responseApi")
 const {validationResult} =require('express-validator')
 
 exports.getRestaurant =asyncHandler(async(req,res)=>{
-    const restaurants = await Restaurant.findAll()
+    const restaurants = await Restaurant.findAll(
+    {        
+        include: { all: true, nested: true }
+    }
+    
+    )
     return res.json(success(res.statusCode,{restaurants:{restaurants}}))
 } )
 

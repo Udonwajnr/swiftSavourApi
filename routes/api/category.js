@@ -5,7 +5,7 @@ const { categoryValidation } = require("../../app/middleware/categoryValidation"
 router.get("/",getCategory)
 router.post("/",categoryValidation,createCategory)
 router.get("/:uuid",getCategoryDetail)
-router.put("/:uuid",updateCategory)
+router.put("/:uuid",categoryValidation,updateCategory)
 router.delete("/:uuid",deleteCategory)
 
 module.exports = router

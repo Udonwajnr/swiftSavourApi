@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate({Dish,Category}) {
       // define association here
       this.hasMany(Dish,{foreignKey:"restaurantId",as:"dish"})
-      this.hasMany(Category,{foreignKey:"categoryRestaurantId",as:"restaurant"})
+      this.hasMany(Category,{foreignKey:"categoryRestaurantId",as:"category"})
     }
   }
   Restaurant.init({

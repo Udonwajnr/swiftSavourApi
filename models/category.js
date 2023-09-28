@@ -11,9 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({Dish,Restaurant}) {
       // define association here
+      this.belongsTo(Restaurant,{foreignKey:"categoryRestaurantId",as:"restaurant",onDelete:"CASCADE"})
       this.hasMany(Dish,{foreignKey:"categoryId",as:"dish"})
-      this.belongsTo(Restaurant,{foreignKey:"categoryRestaurantId",as:"restaurant"})
-
     }
   }
   Category.init({

@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const {sequelize,User,Verification} = require('../../../models')
 const dotenv = require("dotenv").config()
-
+const nodemailer = require("nodemailer")
 
 /**
  * @desc    Register a new user
@@ -56,6 +56,34 @@ exports.register = async(req,res) =>{
               };
 
             let verification = await Verification.create(verificationData)
+            
+              // sending verification mail
+            let config = {
+              service: 'gmail', // your email domain
+              host:"smtp",
+              port:587,
+              secure:false,
+              auth: {
+                  user: process.env.NODEJS_GMAIL_APP_USER, // your email address
+                  pass: process.env.NODEJS_GMAIL_APP_PASSWORD // your password
+               }
+            }
+
+            let transporter = nodemailer.createTransport(config)
+            let message = {
+              "from": 'udonwajnr10@gmail.com', // sender address
+              "to": "umohu67@gmail.com", // list of receivers
+              "subject": 'Welcome to swiftsavor Website!', // Subject line
+              "html": `http://localhost:3000/verifysuccessful/${verification.token}`, // html body
+              "text":"Dear Recipient, thank you for subscribing",
+          };
+          transporter.sendMail(message).then((info) => {
+              console.log("sent")
+          }).catch((error)=>{
+            console.log(error)
+          })
+
+              // verification mail ending
             res.status(201).json(success(
               "Register success, please activate your account.",
               {user: {newUser},
@@ -63,6 +91,7 @@ exports.register = async(req,res) =>{
             },
               res.statusCode
               ))
+                
     }
     catch(err){
         console.error(err.message);
@@ -97,6 +126,7 @@ exports.verify = async(req,res)=>{
       // If verification data exists
     // Get the user data
     // And activate the account
+    
     let user = await User.findOne({where:{ id: verification.userId }})
 
     user.verified = true,
@@ -110,7 +140,7 @@ exports.verify = async(req,res)=>{
       .status(200)
       .json(
         success(
-          "Your successfully verificating your account",
+          "Your successfully verifying your account",
           null,
           res.statusCode
         )

@@ -28,7 +28,11 @@ exports.createDish =asyncHandler(async(req,res)=>{
 
 exports.getDishDetail =asyncHandler(async(req,res)=>{
     const uuid = req.params.uuid
-    const dish = await Dish.findOne({
+    const error = validationResult(req)
+    if(!error.isEmpty()){
+        return res.status(400).json({error:error.array()})
+    }
+const dish = await Dish.findOne({
         where:{uuid},
         include:[{model:Restaurant,as:"restaurant"},{model:Category,as:"category"}]
 
@@ -37,16 +41,25 @@ exports.getDishDetail =asyncHandler(async(req,res)=>{
 })
 
 exports.updateDish = asyncHandler(async(req,res)=>{
+    const error = validationResult(req)
+    if(!error.isEmpty()){
+        return res.status(400).json({error:error.array()})
+    }
+
     const uuid =  req.params.uuid
-    const  {name,description,image,price} = req.body
+    const  {name,description,image,price,categoryName} = req.body
     const dish = await Dish.findOne({
         where:{uuid}
     })
-
+    const category = await Category.findOne({
+        where:{name:categoryName},
+    })
+    dish.categoryId = category.id
     dish.name = name
     dish.description = description
     dish.price = price
     dish.image = image
+
     await dish.save()
     return res.json(success("dish has been updated successfully",res.statusCode,{dish:{dish}}))
 })

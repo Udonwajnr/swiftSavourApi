@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({Restaurant,Category}) {
       // define association here
-      this.belongsTo(Restaurant,{foreignKey:"restaurantId",as:'restaurant',onDelete:"CASCADE"})
-      this.belongsTo(Category,{foreignKey:"categoryId",as:'category'})
+      this.belongsTo(Restaurant,{foreignKey:"restaurantId",onDelete:"CASCADE",as:'restaurant'})
+      this.belongsTo(Category,{foreignKey:"categoryId",as:'category',onDelete:"SET NULL"})
     }
   }
   Dish.init({

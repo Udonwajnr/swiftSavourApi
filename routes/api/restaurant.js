@@ -5,7 +5,7 @@ const { restaurantValidation } = require("../../app/middleware/restaurantValidat
 router.post("/",restaurantValidation,createRestaurant)
 router.get("/",getRestaurant)
 router.get("/:uuid",getRestaurantDetail)
-router.put("/:uuid",updateRestaurant)
+router.put("/:uuid",restaurantValidation,updateRestaurant)
 router.delete("/:uuid",deleteRestaurant)
 
 module.exports = router

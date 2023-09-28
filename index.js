@@ -1,15 +1,82 @@
 const express = require("express")
 const app = express()
 const dotenv = require("dotenv").config()
-const {sequelize} = require('./models')
+const {sequelize,User} = require('./models')
 const cors = require("cors")
 const cookieParser = require('cookie-parser')
+const nodemailer = require("nodemailer")
+const Mailgen = require('mailgen');
 
 app.use(express.json({ extended: false }))
 app.use(cookieParser())
 app.use(cors())
 
 const port =  process.env.PORT || 3000
+app.get("/user",async(req,res)=>{
+        const getUsers = await User.findAll({
+        include: { all: true, nested: true }
+                }
+        )
+        return res.json({user:getUsers})
+})
+
+app.get("/user/:uuid",async(req,res)=>{
+        const uuid = req.params.uuid;
+        const getUsers = await User.findOne({
+                where:{uuid}
+        })
+        return res.json({user:getUsers})
+})
+app.delete("/user/:uuid",async(req,res)=>{
+        const uuid = req.params.uuid;
+        const getUsers = await User.destroy({
+                where:{uuid}
+        })
+        return res.json({user:getUsers})
+})
+// test email
+
+app.post('/email',(req,res)=>{
+        let config = {
+                service: 'gmail', // your email domain
+                host:"smtp",
+                port:587,
+                secure:false,
+                auth: {
+                    user: process.env.NODEJS_GMAIL_APP_USER, // your email address
+                    pass: process.env.NODEJS_GMAIL_APP_PASSWORD // your password
+                 }
+              }
+
+              let transporter = nodemailer.createTransport(config)
+              let message = {
+                "from": 'udonwajnr10@gmail.com', // sender address
+                "to": "umohu67@gmail.com", // list of receivers
+                "subject": 'Welcome to swiftsavor Website!', // Subject line
+                "html": "<b>Hello world?</b>", // html body
+                "text":"Dear Recipient, thank you for subscribing",
+                "attachments": [ 
+                        {
+                          "filename": 'note.txt',
+                          "path": 'note.txt',
+                          "cid": 'note.txt' 
+                        }
+                    ]
+            };
+            transporter.sendMail(message).then((info) => {
+                return res.status(201).json(
+                    {
+                        msg: "Email sent",
+                        info: info.messageId,
+                        preview: nodemailer.getTestMessageUrl(info)
+                    }
+                )
+            }).catch((err) => {
+                return res.status(500).json({ msg: err });
+            }
+            );
+})
+
 // authentication
 app.use("/api/user",require('./routes/api/user'))
 app.use('/api/auth', require("./routes/api/auth"));
@@ -27,5 +94,6 @@ app.use("/api/category", require("./routes/api/category"));
 
 app.listen(port,async()=>{
         // console.log(`example app listening on Port ${port}`)
-    await sequelize.authenticate()
+        //await sequelize.sync({alter:true}) //for OnCascadeDelete
+          await sequelize.authenticate()
 })

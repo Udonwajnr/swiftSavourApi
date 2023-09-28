@@ -37,6 +37,10 @@ exports.getCategoryDetail =asyncHandler(async(req,res)=>{
 
 
 exports.updateCategory = asyncHandler(async(req,res)=>{
+    const error = validationResult(req)
+    if(!error.isEmpty()){
+        return res.status(400).json({error:error.array()})
+    }
     const uuid =  req.params.uuid
     const  {name} = req.body
     const category = await Category.findOne({

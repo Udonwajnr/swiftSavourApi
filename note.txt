@@ -29,3 +29,15 @@ category{
     restaurantName:''
 }
 
+{
+    "firstName":"umoh",
+    "LastName":"Udonwa",
+    "userName":"udonwa10",
+    "email":"umohu67@gmail.com",
+    "phoneNumber":"08070627923",
+    "password":"thisisit"
+}
+
+gmail password
+zdty rsqx kxip jrdb
+

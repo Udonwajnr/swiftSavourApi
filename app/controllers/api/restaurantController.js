@@ -32,6 +32,10 @@ exports.getRestaurantDetail =asyncHandler(async(req,res)=>{
 })
 
 exports.updateRestaurant =asyncHandler(async(req,res)=>{
+    const error = validationResult(req)
+    if(!error.isEmpty()){
+        return res.status(400).json({error:error.array()})
+    }
     const uuid =req.params.uuid
     const {name,address,latitude,longitude,rating,phoneNumber,deliveryTime,logo,image} = req.body
     const restaurant = await Restaurant.findOne({

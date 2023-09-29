@@ -29,6 +29,18 @@ module.exports = {
         type: Sequelize.FLOAT,
       allowNull:false
       },
+      country:{
+        type:Sequelize.STRING,
+        allowNull:false
+      },
+      state: {
+        type:Sequelize.STRING,
+        allowNull:false
+      },
+      city: {
+        type:Sequelize.STRING,
+        allowNull:false
+      },
       rating: {
         type: Sequelize.FLOAT,
         allowNull:false

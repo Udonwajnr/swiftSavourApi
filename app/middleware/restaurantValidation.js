@@ -9,5 +9,8 @@ exports.restaurantValidation =[
     check("phoneNumber").notEmpty().withMessage("Phone Number cannot be empty"),
     check("deliveryTime").notEmpty().withMessage("Delivery Time cannot be empty"),
     check("logo").notEmpty().withMessage("logo cannot be empty"),
-    check("image").notEmpty().withMessage("image Time cannot be empty")
+    check("image").notEmpty().withMessage("image cannot be empty"),
+    check("state").notEmpty().withMessage("state cannot be empty"),
+    check("country").notEmpty().withMessage("country  cannot be empty"),
+    check("city").notEmpty().withMessage("city cannot be empty")
 ]

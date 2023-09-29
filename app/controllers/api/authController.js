@@ -166,6 +166,7 @@ exports.login =async(req,res)=>{
     return res.status(422).json(validation(errors.array()));}
 
   const { email, password } = req.body;
+
   try{
     const user = await User.findOne({where:{ email }});
     // Check the email
@@ -206,7 +207,7 @@ exports.login =async(req,res)=>{
   
           res
             .status(200)
-            .json(success("Login success", { token }, res.statusCode));
+            .json(success("Login success", { token,user }, res.statusCode));
         }
       );
 
@@ -231,7 +232,7 @@ exports.resendVerification = async(req,res)=>{
     return res.status(422).json(validation([{ msg: "Email is required" }]));
 
     try{
-      const user = await User.findOne({where:{ email: email.toLowerCase() }});
+      const user = await User.findOne({where:{ email: email }});
       //  Check the user first
       if (!user){
         return res.status(404).json(error("Email not found", res.statusCode));
@@ -258,6 +259,32 @@ exports.resendVerification = async(req,res)=>{
       userId: user.id,
       type: "Register New Account",
     });
+        // sending verification mail
+        let config = {
+          service: 'gmail', // your email domain
+          host:"smtp",
+          port:587,
+          secure:false,
+          auth: {
+              user: process.env.NODEJS_GMAIL_APP_USER, // your email address
+              pass: process.env.NODEJS_GMAIL_APP_PASSWORD // your password
+           }
+        }
+
+        let transporter = nodemailer.createTransport(config)
+        let message = {
+          "from": 'udonwajnr10@gmail.com', // sender address
+          "to": "umohu67@gmail.com", // list of receivers
+          "subject": 'Welcome to swiftsavor Website!', // Subject line
+          "html": `http://localhost:3000/verifysuccessful/${newVerification.token}`, // html body
+          "text":"Dear Recipient, thank you for subscribing",
+      };
+      transporter.sendMail(message).then((info) => {
+          console.log("sent")
+      }).catch((error)=>{
+        console.log(error)
+      })
+  // ending verification mail 
     
     res
     .status(201)
@@ -291,8 +318,6 @@ exports.getAuthenticatedUser=async(req,res)=>{
     res
       .status(200)
       .json(success(`Hello ${user.userName}`, { user }, res.statusCode));
-
-
   }catch(err){
     console.error(err.message);
     res.status(500).json(error("Server error", res.statusCode));

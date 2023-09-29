@@ -18,8 +18,8 @@ exports.createRestaurant =asyncHandler(async(req,res)=>{
     if(!error.isEmpty()){
         return res.status(400).json({error:error.array()})
     }
-    const {name,address,latitude,longitude,rating,phoneNumber,deliveryTime,logo,image} = req.body
-    const restaurant = await Restaurant.create({name,address,latitude,longitude,rating,phoneNumber,deliveryTime,logo,image})
+    const {name,address,latitude,longitude,rating,phoneNumber,deliveryTime,logo,image,state,country,city} = req.body
+    const restaurant = await Restaurant.create({name,address,latitude,longitude,rating,phoneNumber,deliveryTime,logo,image,state,country,city})
     return res.json(success("Restaurant has been created successfully",res.statusCode,{restaurant:{restaurant}}))
 })
 
@@ -37,7 +37,7 @@ exports.updateRestaurant =asyncHandler(async(req,res)=>{
         return res.status(400).json({error:error.array()})
     }
     const uuid =req.params.uuid
-    const {name,address,latitude,longitude,rating,phoneNumber,deliveryTime,logo,image} = req.body
+    const {name,address,latitude,longitude,rating,phoneNumber,deliveryTime,logo,image,country,state,city} = req.body
     const restaurant = await Restaurant.findOne({
         where:{uuid}
     })
@@ -50,6 +50,9 @@ exports.updateRestaurant =asyncHandler(async(req,res)=>{
     restaurant.deliveryTime = deliveryTime
     restaurant.logo = logo
     restaurant.image = image
+    restaurant.state = state
+    restaurant.country = country
+    restaurant.city = city
     await restaurant.save()
     return res.json(success("Restaurant has been updated successfully",res.statusCode,{restaurant:{restaurant}}))
 })

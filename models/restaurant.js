@@ -41,6 +41,18 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.FLOAT,
       allowNull:false
     },
+    country:{
+      type:DataTypes.STRING,
+      allowNull:false
+    },
+    state: {
+      type:DataTypes.STRING,
+      allowNull:false
+    },
+    city: {
+      type:DataTypes.STRING,
+      allowNull:false
+    },
     phoneNumber: {
       type:DataTypes.STRING,
       allowNull:false

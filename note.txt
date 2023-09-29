@@ -9,7 +9,9 @@ restaurant
     "phoneNumber":"uyo",
     "deliveryTime":"uyo",
     "logo":"uyo",
-    "image":"uyo"
+    "image":"uyo",
+    "country":"Nigeria",
+    "state":"Uyo",
 }
 
 

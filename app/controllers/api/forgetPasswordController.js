@@ -2,6 +2,7 @@ const {success,error,validation} = require("../../helpers/responseApi");
 const {randomString} = require("../../helpers/common")
 const {sequelize,Verification,User} =require("../../../models")
 const bcrypt = require("bcryptjs");
+const nodemailer = require("nodemailer")
 
 /**
  * @desc    Forgot user password
@@ -48,6 +49,33 @@ exports.forgot = async (req,res)=>{
         userId: user.id,
         type: "Forgot Password"
       });
+
+        // sending verification mail
+        let config = {
+          service: 'gmail', // your email domain
+          host:"smtp",
+          port:587,
+          secure:false,
+          auth: {
+              user: process.env.NODEJS_GMAIL_APP_USER, // your email address
+              pass: process.env.NODEJS_GMAIL_APP_PASSWORD // your password
+           }
+        }
+
+        let transporter = nodemailer.createTransport(config)
+        let message = {
+          "from": 'udonwajnr10@gmail.com', // sender address
+          "to": "umohu67@gmail.com", // list of receivers
+          "subject": 'Welcome to swiftsavor Website!', // Subject line
+          "html": `http://localhost:3000/resetpaswword/${newVerification.token}`, // html body
+          "text":"Dear Recipient, thank you for subscribing",
+      };
+      transporter.sendMail(message).then((info) => {
+          console.log("sent")
+      }).catch((error)=>{
+        console.log(error)
+      })
+  // ending verification mail 
 
       // Send the response
     res

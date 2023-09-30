@@ -17,7 +17,6 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
         allowNull:false,
-        unique:true
       },
       categoryRestaurantId:{
           type: Sequelize.INTEGER,

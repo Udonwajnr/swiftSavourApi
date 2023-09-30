@@ -5,8 +5,9 @@ const {validationResult} =require('express-validator')
 
 exports.getDish =asyncHandler(async(req,res)=>{
     const dish = await Dish.findAll({
-        include:[{model:Restaurant,as:"restaurant"},{model:Category,as:"category"}]
+        include: { all: true, nested: true }
     })
+
     return res.json(success(res.statusCode,{dish:{dish}}))
 } )
 
@@ -34,8 +35,7 @@ exports.getDishDetail =asyncHandler(async(req,res)=>{
     }
 const dish = await Dish.findOne({
         where:{uuid},
-        include:[{model:Restaurant,as:"restaurant"},{model:Category,as:"category"}]
-
+        include: { all: true, nested: true }
     })
     return res.json(success(res.statusCode,{dish:{dish}}))
 })

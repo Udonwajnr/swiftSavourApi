@@ -26,7 +26,9 @@ exports.createRestaurant =asyncHandler(async(req,res)=>{
 exports.getRestaurantDetail =asyncHandler(async(req,res)=>{
     const uuid = req.params.uuid
     const restaurant = await Restaurant.findOne({
-        where:{uuid}
+        where:{uuid},
+        include: { all: true, nested: true }
+
     })
     return res.json(success(res.statusCode,{restaurant:{restaurant}}))
 })
